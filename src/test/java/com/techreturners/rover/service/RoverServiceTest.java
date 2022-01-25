@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Test;
 
+import com.techreturners.rover.service.iml.RoverServiceImpl;
+
 public class RoverServiceTest {
 	
 	@Test
