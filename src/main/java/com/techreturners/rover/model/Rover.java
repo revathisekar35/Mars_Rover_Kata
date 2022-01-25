@@ -7,6 +7,11 @@ public class Rover {
 	private char currentDirection;
 	private String status;
 	private Plateau plateau;
+	public Rover(int id){
+		this.id = id;
+	}
+	
+	
 	public int getId() {
 		return id;
 	}

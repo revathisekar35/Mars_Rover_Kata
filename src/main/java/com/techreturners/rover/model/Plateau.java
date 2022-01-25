@@ -8,6 +8,11 @@ public class Plateau {
 	private int xAxis;
 	private int yAxis;
 	private List<Rover> rovers = new ArrayList<Rover>();
+	
+	public Plateau(int id, List<Rover> rovers){
+		this.id = id;
+		this.rovers =rovers;
+	}
 	public int getId() {
 		return id;
 	}
