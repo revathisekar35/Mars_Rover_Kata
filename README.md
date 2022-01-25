@@ -1,4 +1,4 @@
-# Mar_Rover_Kata
+# Mars_Rover_Kata
 
 This project helps Rover to move around the surface.
 
