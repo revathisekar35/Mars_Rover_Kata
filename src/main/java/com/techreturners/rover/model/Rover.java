@@ -1,14 +1,17 @@
 package com.techreturners.rover.model;
 
+import com.techreturners.Plateau.model.Plateau;
+
 public class Rover {
 	private int id;
-	private int xAxis;
-	private int yAxis;
+	private int xCoordinate;
+	private int yCoordinate;
 	private char currentDirection;
 	private String status;
 	private Plateau plateau;
-	public Rover(int id){
+	public Rover(int id,Plateau plateau){
 		this.id = id;
+		this.plateau = plateau;
 	}
 	
 	
@@ -18,17 +21,17 @@ public class Rover {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getxAxis() {
-		return xAxis;
+	public int getxCoordinate() {
+		return xCoordinate;
 	}
-	public void setxAxis(int xAxis) {
-		this.xAxis = xAxis;
+	public void setxCoordinate(int xCoordinate) {
+		this.xCoordinate = xCoordinate;
 	}
-	public int getyAxis() {
-		return yAxis;
+	public int getyCoordinate() {
+		return yCoordinate;
 	}
-	public void setyAxis(int yAxis) {
-		this.yAxis = yAxis;
+	public void setyCoordinate(int yCoordinate) {
+		this.yCoordinate = yCoordinate;
 	}
 	public char getCurrentDirection() {
 		return currentDirection;
