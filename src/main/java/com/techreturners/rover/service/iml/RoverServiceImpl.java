@@ -60,7 +60,7 @@ public class RoverServiceImpl implements RoverService {
 	 */
 	private Plateau setPlateauValues(String plateauCoordinates) {
 		int coOrdinates = Integer.valueOf(plateauCoordinates);
-		return plateauService.setSquareSurfacePlateau(plateau, coOrdinates / 10, coOrdinates % 10, rovers);
+		return plateauService.setSurfaceOfPlateau(plateau, coOrdinates / 10, coOrdinates % 10, rovers);
 	}
 
 	/**

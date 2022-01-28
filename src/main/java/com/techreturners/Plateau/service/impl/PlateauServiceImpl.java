@@ -8,7 +8,7 @@ import com.techreturners.rover.model.Rover;
 
 public class PlateauServiceImpl implements PlateauService {
 
-	public Plateau setSquareSurfacePlateau(Plateau plateau, int xCoordinate, int yCoordinate, List<Rover> rovers) {
+	public Plateau setSurfaceOfPlateau(Plateau plateau, int xCoordinate, int yCoordinate, List<Rover> rovers) {
 		plateau.setxCoordinate(xCoordinate);
 		plateau.setyCoordinate(yCoordinate);
 		plateau.setRovers(null);
