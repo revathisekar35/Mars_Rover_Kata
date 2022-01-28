@@ -20,8 +20,12 @@ public class RoverServiceTest {
 		input.add("LMLMLMLMM");
 		input.add("33E");
 		input.add("MMRMMRMRRM");
+		List<String> output = new ArrayList<String>();
+		output.add("13N");
+		output.add("51E");
 		
-		assertEquals("13N", roverService.moveRover(input));
+		assertEquals(output.get(0), roverService.moveRover(input).get(0));
+		assertEquals(output.get(1), roverService.moveRover(input).get(1));
 		
 	}
 
