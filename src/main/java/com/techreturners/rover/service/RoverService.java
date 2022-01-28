@@ -1,6 +1,9 @@
 package com.techreturners.rover.service;
 
+import java.util.List;
+
+
 public interface RoverService {
-	String moveRover(int plateauCoorinates,String roverCurrentPosition,String instruction);
+	String moveRover (List<String> input);
 
 }
