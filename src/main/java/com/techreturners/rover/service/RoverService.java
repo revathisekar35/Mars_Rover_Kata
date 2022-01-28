@@ -4,6 +4,6 @@ import java.util.List;
 
 
 public interface RoverService {
-	String moveRover (List<String> input);
+	List<String> moveRover (List<String> input);
 
 }

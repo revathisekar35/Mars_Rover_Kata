@@ -6,38 +6,49 @@ import java.util.List;
 import com.techreturners.Plateau.model.Plateau;
 import com.techreturners.Plateau.service.PlateauService;
 import com.techreturners.Plateau.service.impl.PlateauServiceImpl;
+import com.techreturners.rover.model.Direction;
 import com.techreturners.rover.model.Rover;
+import com.techreturners.rover.model.RoverMovementDirection;
 import com.techreturners.rover.service.RoverService;
 
 public class RoverServiceImpl implements RoverService {
 	List<Rover> rovers = new ArrayList<Rover>();
 	Plateau plateau;
 	PlateauService plateauService = new PlateauServiceImpl();
+	private final char M = 'M';
+	private final char R = 'R';
+	private final char L = 'L';
 
 	public RoverServiceImpl() {
-		rovers.add(new Rover(1, plateau));
-		rovers.add(new Rover(2, plateau));
 		plateau = new Plateau(1, rovers);
 
 	}
 
-	public String moveRover(List<String> input) {
+	public List<String> moveRover(List<String> input) {
 		// As per document 1st input as Plateau coordiantes and others are rover
 		// position and movement.
-
-		// int totalRovers = ((input.size()-1)/2);
+		List<String> finalRoverPosition = new ArrayList<String>();
 		setPlateauValues(input.get(0));
+
 		int roverId = 1;
 		for (int i = 1; i < input.size();) {
 			Rover rover = setRoverPosition(roverId, input.get(i), input.get(i++));
-			if(isRoverAllowedToMove(rover, rovers)) {
-				input.get(i++);
-				
+			if (isRoverAllowedToMove(rover, rovers)) {
+				String roverInstruction = input.get(i++);
+				char[] movementInstruction = roverInstruction.toCharArray();
+				for (char nextMove : movementInstruction) {
+					isNextMovementAvailable(nextMove, rovers, plateau, rover);
+				}
+				StringBuffer sb = new StringBuffer();
+				sb.append(rover.getxCoordinate());
+				sb.append(rover.getyCoordinate());
+				sb.append(rover.getCurrentDirection());
+				finalRoverPosition.add(sb.toString());
 			}
 			roverId++;
 
 		}
-		return null;
+		return finalRoverPosition;
 
 	}
 
@@ -48,8 +59,8 @@ public class RoverServiceImpl implements RoverService {
 
 	private Rover setRoverPosition(int roverId, String roverCurrentPosition, String roverMoveInstruction) {
 		Rover rover = new Rover(roverId, plateau);
-		rover.setxCoordinate(roverCurrentPosition.charAt(0));
-		rover.setyCoordinate(roverCurrentPosition.charAt(1));
+		rover.setxCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(0)));
+		rover.setyCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(1)));
 		rover.setCurrentDirection(roverCurrentPosition.charAt(2));
 		rovers.add(rover);
 		return rover;
@@ -57,12 +68,45 @@ public class RoverServiceImpl implements RoverService {
 
 	private boolean isRoverAllowedToMove(Rover currentRover, List<Rover> rovers) {
 		int currentRoverIndex = rovers.indexOf(currentRover);
-		Rover previousRover = rovers.get(currentRoverIndex-1);
-		if(previousRover!= null && !previousRover.isMotion()) {
+		Rover previousRover = null;
+		if (currentRoverIndex != 0)
+			previousRover = rovers.get(currentRoverIndex - 1);
+
+		if (previousRover == null || (previousRover != null && !previousRover.isMotion())) {
 			return true;
 		}
 		return false;
 	}
 
-	
+	private String isNextMovementAvailable(char moveInstruction, List<Rover> rovers, Plateau plateau,
+			Rover currentRover) {
+
+		char currentRoverDirection = currentRover.getCurrentDirection();
+		if (M == moveInstruction) {
+			if (currentRoverDirection == Direction.N.direction) {
+				currentRover.setyCoordinate(currentRover.getyCoordinate() + 1);
+
+			} else if (currentRoverDirection == Direction.S.direction) {
+				currentRover.setyCoordinate(currentRover.getyCoordinate() - 1);
+
+			} else if (currentRoverDirection == Direction.E.direction) {
+				currentRover.setxCoordinate(currentRover.getxCoordinate() + 1);
+			} else {
+				currentRover.setxCoordinate(currentRover.getxCoordinate() - 1);
+			}
+		} else if ((L == moveInstruction && currentRoverDirection == Direction.N.direction)
+				|| (R == moveInstruction && currentRoverDirection == Direction.S.direction)) {
+			currentRover.setCurrentDirection(RoverMovementDirection.NL.direction);
+		} else if ((R == moveInstruction && currentRoverDirection == Direction.N.direction)
+				|| (L == moveInstruction && currentRoverDirection == Direction.S.direction)) {
+			currentRover.setCurrentDirection(RoverMovementDirection.NR.direction);
+		} else if ((R == moveInstruction && currentRoverDirection == Direction.E.direction)
+				|| (L == moveInstruction && currentRoverDirection == Direction.W.direction)) {
+			currentRover.setCurrentDirection(RoverMovementDirection.ER.direction);
+		} else {
+			currentRover.setCurrentDirection(RoverMovementDirection.EL.direction);
+		}
+		return null;
+	}
+
 }
