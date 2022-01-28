@@ -7,7 +7,7 @@ public class Rover {
 	private int xCoordinate;
 	private int yCoordinate;
 	private char currentDirection;
-	private String status;
+	private boolean isMotion;
 	private Plateau plateau;
 	public Rover(int id,Plateau plateau){
 		this.id = id;
@@ -39,17 +39,24 @@ public class Rover {
 	public void setCurrentDirection(char currentDirection) {
 		this.currentDirection = currentDirection;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	public Plateau getPlateau() {
 		return plateau;
 	}
 	public void setPlateau(Plateau plateau) {
 		this.plateau = plateau;
 	}
+
+
+	public boolean isMotion() {
+		return isMotion;
+	}
+
+
+	public void setMotion(boolean isMotion) {
+		this.isMotion = isMotion;
+	}
+
+
+	
 
 }
