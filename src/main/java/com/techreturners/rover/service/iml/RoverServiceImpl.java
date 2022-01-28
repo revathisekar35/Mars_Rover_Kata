@@ -37,7 +37,7 @@ public class RoverServiceImpl implements RoverService {
 				String roverInstruction = input.get(i++);
 				char[] movementInstruction = roverInstruction.toCharArray();
 				for (char nextMove : movementInstruction) {
-					isNextMovementAvailable(nextMove, rovers, plateau, rover);
+					getFinalRoverPosition(nextMove, rovers, plateau, rover);
 				}
 				StringBuffer sb = new StringBuffer();
 				sb.append(rover.getxCoordinate());
@@ -52,11 +52,26 @@ public class RoverServiceImpl implements RoverService {
 
 	}
 
+	/**
+	 * Get the input of Plateau co-ordinates and set Plateau x,y coordinates
+	 * 
+	 * @param plateauCoordinates
+	 * @return Plateau
+	 */
 	private Plateau setPlateauValues(String plateauCoordinates) {
 		int coOrdinates = Integer.valueOf(plateauCoordinates);
 		return plateauService.setSquareSurfacePlateau(plateau, coOrdinates / 10, coOrdinates % 10, rovers);
 	}
 
+	/**
+	 * This method used to set x,y coordinates and direction of current rover
+	 * position
+	 * 
+	 * @param roverId
+	 * @param roverCurrentPosition
+	 * @param roverMoveInstruction
+	 * @return Rover
+	 */
 	private Rover setRoverPosition(int roverId, String roverCurrentPosition, String roverMoveInstruction) {
 		Rover rover = new Rover(roverId, plateau);
 		rover.setxCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(0)));
@@ -66,6 +81,13 @@ public class RoverServiceImpl implements RoverService {
 		return rover;
 	}
 
+	/**
+	 * This method used to check previous rover movement
+	 * 
+	 * @param currentRover
+	 * @param rovers
+	 * @return boolean
+	 */
 	private boolean isRoverAllowedToMove(Rover currentRover, List<Rover> rovers) {
 		int currentRoverIndex = rovers.indexOf(currentRover);
 		Rover previousRover = null;
@@ -78,11 +100,22 @@ public class RoverServiceImpl implements RoverService {
 		return false;
 	}
 
-	private String isNextMovementAvailable(char moveInstruction, List<Rover> rovers, Plateau plateau,
+	/**
+	 * This method used to calculate the final rover position based on given
+	 * instruction
+	 * 
+	 * @param moveInstruction
+	 * @param rovers
+	 * @param plateau
+	 * @param currentRover
+	 * @return String
+	 */
+	private void getFinalRoverPosition(char moveInstruction, List<Rover> rovers, Plateau plateau,
 			Rover currentRover) {
 
 		char currentRoverDirection = currentRover.getCurrentDirection();
 		if (M == moveInstruction) {
+			// based on rover position and direction calculating x,y values of rover
 			if (currentRoverDirection == Direction.N.direction) {
 				currentRover.setyCoordinate(currentRover.getyCoordinate() + 1);
 
@@ -94,6 +127,7 @@ public class RoverServiceImpl implements RoverService {
 			} else {
 				currentRover.setxCoordinate(currentRover.getxCoordinate() - 1);
 			}
+			// based on current rover direction calculating final diretion of rover
 		} else if ((L == moveInstruction && currentRoverDirection == Direction.N.direction)
 				|| (R == moveInstruction && currentRoverDirection == Direction.S.direction)) {
 			currentRover.setCurrentDirection(RoverMovementDirection.NL.direction);
@@ -106,7 +140,6 @@ public class RoverServiceImpl implements RoverService {
 		} else {
 			currentRover.setCurrentDirection(RoverMovementDirection.EL.direction);
 		}
-		return null;
 	}
 
 }
