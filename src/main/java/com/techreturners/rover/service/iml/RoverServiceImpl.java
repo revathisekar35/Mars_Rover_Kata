@@ -110,22 +110,23 @@ public class RoverServiceImpl implements RoverService {
 	 * @param currentRover
 	 * @return String
 	 */
-	private void getFinalRoverPosition(char moveInstruction, List<Rover> rovers, Plateau plateau,
-			Rover currentRover) {
+	private void getFinalRoverPosition(char moveInstruction, List<Rover> rovers, Plateau plateau, Rover currentRover) {
 
 		char currentRoverDirection = currentRover.getCurrentDirection();
+		int currentRoverXcoordinate = currentRover.getxCoordinate();
+		int currentRoverYcoordinate = currentRover.getyCoordinate();
+
 		if (M == moveInstruction) {
 			// based on rover position and direction calculating x,y values of rover
-			if (currentRoverDirection == Direction.N.direction) {
-				currentRover.setyCoordinate(currentRover.getyCoordinate() + 1);
-
-			} else if (currentRoverDirection == Direction.S.direction) {
-				currentRover.setyCoordinate(currentRover.getyCoordinate() - 1);
-
-			} else if (currentRoverDirection == Direction.E.direction) {
-				currentRover.setxCoordinate(currentRover.getxCoordinate() + 1);
-			} else {
-				currentRover.setxCoordinate(currentRover.getxCoordinate() - 1);
+			if (currentRoverDirection == Direction.N.direction && plateau.getyCoordinate() > currentRoverYcoordinate) {
+				currentRover.setyCoordinate(currentRoverYcoordinate + 1);
+			} else if (currentRoverDirection == Direction.S.direction && plateau.getyCoordinate() < 0) {
+				currentRover.setyCoordinate(currentRoverYcoordinate - 1);
+			} else if (currentRoverDirection == Direction.E.direction
+					&& plateau.getxCoordinate() > currentRoverXcoordinate) {
+				currentRover.setxCoordinate(currentRoverXcoordinate + 1);
+			} else if (currentRoverDirection == Direction.W.direction && plateau.getxCoordinate() < 0) {
+				currentRover.setxCoordinate(currentRoverXcoordinate - 1);
 			}
 			// based on current rover direction calculating final diretion of rover
 		} else if ((L == moveInstruction && currentRoverDirection == Direction.N.direction)
