@@ -29,13 +29,14 @@ public class RoverServiceTest {
 		assertEquals(output.get(1), roverOutput.get("Rover2 Position"));
 
 	}
+
 	@Test
 	public void moveRoverFailureTest() {
 		RoverService roverService = new RoverServiceImpl();
 		List<String> input = new ArrayList<String>();
 		input.add("55");
 		input.add("33E");
-		input.add("MMMRMMRMRRM");		
+		input.add("MMMRMMRMRRM");
 		Map<String, String> roverOutput = roverService.moveRover(input);
 		assertEquals("Rover position doesn't available", roverOutput.get("Rover1 Message"));
 

@@ -18,10 +18,10 @@ public class RoverAppMain {
 		input.add("LMLMLMLMM");
 		input.add("33E");
 		input.add("MMMRMMRMRRM");
-		Map<String,String> finalRoverPosition = roverService.moveRover(input);
+		Map<String, String> finalRoverPosition = roverService.moveRover(input);
 		System.out.println("Output of Rovers:\n");
-		finalRoverPosition.forEach((k,v)->System.out.println( k + ": " + v+"\n"));
-		
+		finalRoverPosition.forEach((k, v) -> System.out.println(k + ": " + v + "\n"));
+
 	}
 
 }
