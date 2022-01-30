@@ -4,15 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
 import com.techreturners.rover.service.iml.RoverServiceImpl;
 
 public class RoverServiceTest {
-	
+
 	@Test
-	public void moveRoverTest() {
+	public void moveRoverSuccessTest() {
 		RoverService roverService = new RoverServiceImpl();
 		List<String> input = new ArrayList<String>();
 		input.add("55");
@@ -23,10 +24,21 @@ public class RoverServiceTest {
 		List<String> output = new ArrayList<String>();
 		output.add("13N");
 		output.add("51E");
-		List<String> roverOutput = roverService.moveRover(input);
-		assertEquals(output.get(0),roverOutput.get(0) );
-		assertEquals(output.get(1), roverOutput.get(1));
-		
+		Map<String, String> roverOutput = roverService.moveRover(input);
+		assertEquals(output.get(0), roverOutput.get("Rover1 Position"));
+		assertEquals(output.get(1), roverOutput.get("Rover2 Position"));
+
+	}
+	@Test
+	public void moveRoverFailureTest() {
+		RoverService roverService = new RoverServiceImpl();
+		List<String> input = new ArrayList<String>();
+		input.add("55");
+		input.add("33E");
+		input.add("MMMRMMRMRRM");		
+		Map<String, String> roverOutput = roverService.moveRover(input);
+		assertEquals("Rover position doesn't available", roverOutput.get("Rover1 Message"));
+
 	}
 
 }

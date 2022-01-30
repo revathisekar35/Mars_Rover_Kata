@@ -9,12 +9,13 @@ public class Rover {
 	private char currentDirection;
 	private boolean isMotion;
 	private Plateau plateau;
-	public Rover(int id,Plateau plateau){
+	private String name;
+	public Rover(int id,Plateau plateau,String name){
 		this.id = id;
 		this.plateau = plateau;
+		this.name = name;
 	}
 	
-	public Rover() {}
 	public int getId() {
 		return id;
 	}
@@ -51,6 +52,13 @@ public class Rover {
 	public void setMotion(boolean isMotion) {
 		this.isMotion = isMotion;
 	}
-	public Rover clone() throws CloneNotSupportedException { return (Rover) super.clone(); }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }
