@@ -2,6 +2,7 @@ package com.techreturners.rover.service.iml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.techreturners.Plateau.model.Plateau;
 import com.techreturners.Plateau.service.PlateauService;
@@ -21,6 +22,8 @@ public class RoverServiceImpl implements RoverService {
 
 	public RoverServiceImpl() {
 		plateau = new Plateau(1, rovers);
+		rovers.add(new Rover(1, plateau));
+		rovers.add(new Rover(2, plateau));
 
 	}
 
@@ -33,11 +36,12 @@ public class RoverServiceImpl implements RoverService {
 		int roverId = 1;
 		for (int i = 1; i < input.size();) {
 			Rover rover = setRoverPosition(roverId, input.get(i), input.get(i++));
+			rover.setMotion(true);
 			if (isRoverAllowedToMove(rover, rovers)) {
 				String roverInstruction = input.get(i++);
 				char[] movementInstruction = roverInstruction.toCharArray();
 				for (char nextMove : movementInstruction) {
-					getFinalRoverPosition(nextMove, rovers, plateau, rover);
+					setFinalRoverPosition(nextMove, rovers, plateau, rover);
 				}
 				StringBuffer sb = new StringBuffer();
 				sb.append(rover.getxCoordinate());
@@ -46,7 +50,7 @@ public class RoverServiceImpl implements RoverService {
 				finalRoverPosition.add(sb.toString());
 			}
 			roverId++;
-
+			rover.setMotion(false);
 		}
 		return finalRoverPosition;
 
@@ -73,16 +77,19 @@ public class RoverServiceImpl implements RoverService {
 	 * @return Rover
 	 */
 	private Rover setRoverPosition(int roverId, String roverCurrentPosition, String roverMoveInstruction) {
-		Rover rover = new Rover(roverId, plateau);
+		Rover rover = getRoverById(roverId);
 		rover.setxCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(0)));
 		rover.setyCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(1)));
 		rover.setCurrentDirection(roverCurrentPosition.charAt(2));
-		rovers.add(rover);
 		return rover;
 	}
 
+	private Rover getRoverById(int roverId) {
+		return rovers.stream().filter(p -> p.getId() == 1).collect(Collectors.toList()).get(0);
+	}
+
 	/**
-	 * This method used to check previous rover movement
+	 * This method used to check previous rover motion
 	 * 
 	 * @param currentRover
 	 * @param rovers
@@ -109,23 +116,32 @@ public class RoverServiceImpl implements RoverService {
 	 * @param plateau
 	 * @param currentRover
 	 * @return String
+	 * @throws Exception
 	 */
-	private void getFinalRoverPosition(char moveInstruction, List<Rover> rovers, Plateau plateau, Rover currentRover) {
-
+	private void setFinalRoverPosition(char moveInstruction, List<Rover> rovers, Plateau plateau, Rover currentRover) {
 		char currentRoverDirection = currentRover.getCurrentDirection();
 		int currentRoverXcoordinate = currentRover.getxCoordinate();
 		int currentRoverYcoordinate = currentRover.getyCoordinate();
 
 		if (M == moveInstruction) {
-			// based on rover position and direction calculating x,y values of rover
-			if (currentRoverDirection == Direction.N.direction && plateau.getyCoordinate() > currentRoverYcoordinate) {
+			/*
+			 * Based on rover position and direction calculating x,y values of rover added.
+			 * Added condition for rover not to exceed Plateau and check whether any rover
+			 * already present in the move
+			 */
+			if (currentRoverDirection == Direction.N.direction && plateau.getyCoordinate() > currentRoverYcoordinate
+					&& !rovers.stream().anyMatch(p -> p.getyCoordinate() == (currentRoverYcoordinate + 1))) {
 				currentRover.setyCoordinate(currentRoverYcoordinate + 1);
-			} else if (currentRoverDirection == Direction.S.direction && plateau.getyCoordinate() < 0) {
+			} else if (currentRoverDirection == Direction.S.direction && currentRoverYcoordinate >= 0
+					&& !rovers.stream().anyMatch(p -> p.getyCoordinate() == (currentRoverYcoordinate - 1))) {
 				currentRover.setyCoordinate(currentRoverYcoordinate - 1);
 			} else if (currentRoverDirection == Direction.E.direction
-					&& plateau.getxCoordinate() > currentRoverXcoordinate) {
+					&& plateau.getxCoordinate() > currentRoverXcoordinate
+					&& plateau.getxCoordinate() > currentRoverXcoordinate
+					&& !rovers.stream().anyMatch(p -> p.getxCoordinate() == (currentRoverXcoordinate + 1))) {
 				currentRover.setxCoordinate(currentRoverXcoordinate + 1);
-			} else if (currentRoverDirection == Direction.W.direction && plateau.getxCoordinate() < 0) {
+			} else if (currentRoverDirection == Direction.W.direction && currentRoverXcoordinate >= 0
+					&& !rovers.stream().anyMatch(p -> p.getxCoordinate() == (currentRoverXcoordinate + 1))) {
 				currentRover.setxCoordinate(currentRoverXcoordinate - 1);
 			}
 			// based on current rover direction calculating final diretion of rover

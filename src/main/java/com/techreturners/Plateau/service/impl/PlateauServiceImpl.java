@@ -11,7 +11,7 @@ public class PlateauServiceImpl implements PlateauService {
 	public Plateau setSurfaceOfPlateau(Plateau plateau, int xCoordinate, int yCoordinate, List<Rover> rovers) {
 		plateau.setxCoordinate(xCoordinate);
 		plateau.setyCoordinate(yCoordinate);
-		plateau.setRovers(null);
+		plateau.setRovers(rovers);
 		return plateau;
 	}
 

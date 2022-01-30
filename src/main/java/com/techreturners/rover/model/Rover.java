@@ -14,7 +14,7 @@ public class Rover {
 		this.plateau = plateau;
 	}
 	
-	
+	public Rover() {}
 	public int getId() {
 		return id;
 	}
@@ -45,18 +45,12 @@ public class Rover {
 	public void setPlateau(Plateau plateau) {
 		this.plateau = plateau;
 	}
-
-
 	public boolean isMotion() {
 		return isMotion;
 	}
-
-
 	public void setMotion(boolean isMotion) {
 		this.isMotion = isMotion;
 	}
-
-
-	
+	public Rover clone() throws CloneNotSupportedException { return (Rover) super.clone(); }
 
 }
