@@ -16,8 +16,8 @@ Instuction Clarification:
      
 Plateau surface have n number of Rovers, so Rovers move sequentially, this means that the first Rover needs to finish moving first before the next one can move.
 
-This program also checks whether the next position is available to the rover or not based on movement instruction.
-If the position available will check the move sequentially and return the final rover position as output.
+This program also checks whether the next position is available to the rover or not and Is rover exceeding Plateau surface based on movement instruction.
+If the position available will check the move sequentially and return the final rover position as output else Failure message will return
 
-This ouput will send to Rover and rovers move around surface of Mars.
+This success ouput will send to Rover and rovers move around surface of Mars.
     
