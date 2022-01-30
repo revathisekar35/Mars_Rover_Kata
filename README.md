@@ -2,7 +2,7 @@
 
 This project helps Rover to move around the surface.
 
-Here the surface is Mars Plateau and based on input surface co-ordinates co-ordinates will be calculated.
+Here the surface is Mars Plateau and based on input surface co-ordinates will be calculated.
 
 This program will get input as rover position and instuction.
          i) Rover Position(Eg: 2 3 N) will give x,y co-ordinates of rover and direction of rover.
