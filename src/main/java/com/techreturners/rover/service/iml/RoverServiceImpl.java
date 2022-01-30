@@ -22,15 +22,23 @@ public class RoverServiceImpl implements RoverService {
 	private final char R = 'R';
 	private final char L = 'L';
 
+	/**
+	 * As we don't have database and based on input assume only 2 rovers going to
+	 * land on Plateau and created object to the same, if we want we can add extra
+	 * rover here
+	 */
 	public RoverServiceImpl() {
 		plateau = new Plateau(1, rovers);
 		rovers.add(new Rover(1, plateau, "Rover1"));
 		rovers.add(new Rover(2, plateau, "Rover2"));
-
 	}
 
+	/**
+	 * This method used to calculate the final movement of rover based on input. If
+	 * rover movement doen't available will give error message
+	 */
 	public Map<String, String> moveRover(List<String> input) {
-		// As per document 1st input as Plateau coordiantes and others are rover
+		// As per document 1st input as Plateau coordinates and others are rover
 		// position and movement.
 		Map<String, String> finalRoverPosition = new HashMap<String, String>();
 		setPlateauValues(input.get(0));
@@ -38,14 +46,17 @@ public class RoverServiceImpl implements RoverService {
 		int roverId = 1;
 		for (int i = 1; i < input.size();) {
 			Rover rover = setRoverPosition(roverId, input.get(i), input.get(i++));
+			// set rover motion true to stop the next rover movement once moved successfully
+			// rover motion will set to false
 			rover.setMotion(true);
 			if (isRoverAllowedToMove(rover, rovers)) {
 				String roverInstruction = input.get(i++);
 				char[] movementInstruction = roverInstruction.toCharArray();
 				boolean isSuccess = true;
 				for (char nextMove : movementInstruction) {
+					// If rover next move position available success will be true else false
 					if (isSuccess)
-						isSuccess = setFinalRoverPosition(nextMove, rovers, plateau, rover);
+						isSuccess = checkAndSetFinalRoverPosition(nextMove, rovers, plateau, rover);
 					else
 						break;
 				}
@@ -70,7 +81,7 @@ public class RoverServiceImpl implements RoverService {
 	}
 
 	/**
-	 * Get the input of Plateau co-ordinates and set Plateau x,y coordinates
+	 * Get the input of Plateau coordinates and set Plateau x,y coordinates
 	 * 
 	 * @param plateauCoordinates
 	 * @return Plateau
@@ -97,6 +108,12 @@ public class RoverServiceImpl implements RoverService {
 		return rover;
 	}
 
+	/**
+	 * Get rover based on rover id
+	 * 
+	 * @param roverId
+	 * @return Rover
+	 */
 	private Rover getRoverById(int roverId) {
 		return rovers.stream().filter(p -> p.getId() == roverId).collect(Collectors.toList()).get(0);
 	}
@@ -122,16 +139,16 @@ public class RoverServiceImpl implements RoverService {
 
 	/**
 	 * This method used to calculate the final rover position based on given
-	 * instruction
+	 * instruction, Plateau and other rovers.
 	 * 
 	 * @param moveInstruction
 	 * @param rovers
 	 * @param plateau
 	 * @param currentRover
-	 * @return String
+	 * @return boolean
 	 * @throws Exception
 	 */
-	private boolean setFinalRoverPosition(char moveInstruction, List<Rover> rovers, Plateau plateau,
+	private boolean checkAndSetFinalRoverPosition(char moveInstruction, List<Rover> rovers, Plateau plateau,
 			Rover currentRover) {
 		char currentRoverDirection = currentRover.getCurrentDirection();
 		int currentRoverXcoordinate = currentRover.getxCoordinate();
@@ -139,9 +156,9 @@ public class RoverServiceImpl implements RoverService {
 
 		if (M == moveInstruction) {
 			/*
-			 * Based on rover position and direction calculating x,y values of rover added.
-			 * Added condition for rover not to exceed Plateau and check whether any rover
-			 * already present in the move
+			 * Based on rover position and direction calculating x,y values of rover. Added
+			 * condition for rover not to exceed Plateau. Check whether other rovers already
+			 * present in the current move
 			 */
 			if (currentRoverDirection == Direction.N.direction && plateau.getyCoordinate() > currentRoverYcoordinate
 					&& !rovers.stream().anyMatch(p -> (p.getyCoordinate() == (currentRoverYcoordinate + 1)
