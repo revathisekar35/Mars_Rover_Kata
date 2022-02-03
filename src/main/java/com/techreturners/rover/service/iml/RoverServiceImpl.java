@@ -102,6 +102,11 @@ public class RoverServiceImpl implements RoverService {
 	 */
 	private Rover setRoverPosition(int roverId, String roverCurrentPosition, String roverMoveInstruction) {
 		Rover rover = getRoverById(roverId);
+		// If rover doesn't exit on rover list, it will create new rover
+		if(rover == null) {
+			rover = new Rover(roverId, plateau, "Rover"+roverId);
+			rovers.add(rover);
+		}
 		rover.setxCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(0)));
 		rover.setyCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(1)));
 		rover.setCurrentDirection(roverCurrentPosition.charAt(2));
@@ -115,7 +120,12 @@ public class RoverServiceImpl implements RoverService {
 	 * @return Rover
 	 */
 	private Rover getRoverById(int roverId) {
-		return rovers.stream().filter(p -> p.getId() == roverId).collect(Collectors.toList()).get(0);
+		 List<Rover> roverList = rovers.stream().filter(p -> p.getId() == roverId).collect(Collectors.toList());
+		 System.out.println(roverList.isEmpty());
+		 if(roverList == null || roverList.isEmpty())
+			 return null;
+		 else
+			 return roverList.get(0);
 	}
 
 	/**

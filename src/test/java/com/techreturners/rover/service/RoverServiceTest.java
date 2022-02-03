@@ -21,12 +21,15 @@ public class RoverServiceTest {
 		input.add("LMLMLMLMM");
 		input.add("33E");
 		input.add("MMRMMRMRRM");
+		input.add("33E");
+		input.add("MMRMMRMRRM");
 		List<String> output = new ArrayList<String>();
 		output.add("13N");
 		output.add("51E");
 		Map<String, String> roverOutput = roverService.moveRover(input);
 		assertEquals(output.get(0), roverOutput.get("Rover1 Position"));
 		assertEquals(output.get(1), roverOutput.get("Rover2 Position"));
+		assertEquals("Rover position doesn't available", roverOutput.get("Rover3 Message"));
 
 	}
 
