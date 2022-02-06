@@ -38,12 +38,11 @@ public class RoverServiceImpl implements RoverService {
 	 * rover movement doen't available will give error message
 	 */
 	public Map<String, String> moveRover(List<String> input) {
-		// As per document 1st input as Plateau coordinates and others are rover
-		// position and movement.
-		setPlateauValues(input.get(0));
 		Map<String, String> finalRoverPosition = new HashMap<String, String>();
-
 		try {
+			// As per document 1st input as Plateau coordinates and others are rover
+			// position and movement.
+			setPlateauValues(input.get(0));
 			int roverId = 1;
 			for (int i = 1; i < input.size();) {
 				Rover rover = setRoverPosition(roverId, input.get(i), input.get(i++));
