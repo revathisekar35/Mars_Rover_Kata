@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.techreturners.rover.model.Rover;
 import com.techreturners.rover.service.RoverService;
 import com.techreturners.rover.service.iml.RoverServiceImpl;
 
 public class RoverAppMain {
-
 	public static void main(String[] args) throws Exception {
 		RoverService roverService = new RoverServiceImpl();
 		List<String> input = new ArrayList<String>();
@@ -21,7 +19,5 @@ public class RoverAppMain {
 		Map<String, String> finalRoverPosition = roverService.moveRover(input);
 		System.out.println("Output of Rovers:\n");
 		finalRoverPosition.forEach((k, v) -> System.out.println(k + ": " + v + "\n"));
-
 	}
-
 }

@@ -60,5 +60,4 @@ public class RoverServiceTest {
 		roverService.setRoverPosition(0, "-12", "MMMRMMRMRRM");
 		roverService.setRoverPosition(0, "1-2", "MMMRMMRMRRM");
 	}
-
 }
