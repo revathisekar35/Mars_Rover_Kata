@@ -29,8 +29,8 @@ public class RoverServiceImpl implements RoverService {
 	 */
 	public RoverServiceImpl() {
 		plateau = new Plateau(1, rovers);
-		rovers.add(new Rover(1, plateau, "Rover1"));
-		rovers.add(new Rover(2, plateau, "Rover2"));
+		rovers.add(new Rover(1, "Rover1"));
+		rovers.add(new Rover(2, "Rover2"));
 	}
 
 	/**
@@ -81,6 +81,7 @@ public class RoverServiceImpl implements RoverService {
 			System.out.println("Array Indeoutofbound Exception occured in moveRover method" + ai.getMessage());
 		} catch (Exception e) {
 			System.out.println("Exception ocuured in moveRover method " + e.getMessage());
+			e.printStackTrace();
 		}
 		return finalRoverPosition;
 
@@ -92,7 +93,7 @@ public class RoverServiceImpl implements RoverService {
 	 * @param plateauCoordinates
 	 * @return Plateau
 	 */
-	private Plateau setPlateauValues(String plateauCoordinates) {
+	public Plateau setPlateauValues(String plateauCoordinates) {
 		int coOrdinates = Integer.valueOf(plateauCoordinates);
 		return plateauService.setSurfaceOfPlateau(plateau, coOrdinates / 10, coOrdinates % 10, rovers);
 	}
@@ -105,17 +106,25 @@ public class RoverServiceImpl implements RoverService {
 	 * @param roverCurrentPosition
 	 * @param roverMoveInstruction
 	 * @return Rover
+	 * @throws Exception 
 	 */
-	private Rover setRoverPosition(int roverId, String roverCurrentPosition, String roverMoveInstruction) {
+	public Rover setRoverPosition(int roverId, String roverCurrentPosition, String roverMoveInstruction) throws Exception {
 		Rover rover = getRoverById(roverId);
 		// If rover doesn't exit on rover list, it will create new rover
 		if (rover == null) {
-			rover = new Rover(roverId, plateau, "Rover" + roverId);
+			rover = new Rover(roverId, "Rover" + roverId);
 			rovers.add(rover);
+
 		}
-		rover.setxCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(0)));
-		rover.setyCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(1)));
-		rover.setCurrentDirection(roverCurrentPosition.charAt(2));
+		int x = Character.getNumericValue(roverCurrentPosition.charAt(0));
+		int y = Character.getNumericValue(roverCurrentPosition.charAt(1));
+		if (x > 0 && y > 0) {
+			rover.setxCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(0)));
+			rover.setyCoordinate(Character.getNumericValue(roverCurrentPosition.charAt(1)));
+			rover.setCurrentDirection(roverCurrentPosition.charAt(2));
+		}else {
+			throw new Exception("X,Y coordinates values shouldn't be negative vaules");
+		}
 		return rover;
 	}
 
